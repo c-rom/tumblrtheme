@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <title>{Title}</title>
+<!-- Favicon -->
+<link rel="shortcut icon" href="{Favicon}" />
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" href="{RSS}" />
+<!-- Meta Tags -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+{block:Description}<meta name="description" content="{MetaDescription}"/>{/block:Description}
+<!-- Stylesheets -->
+<link rel="stylesheet" type="text/css" href="http://static.tumblr.com/ubkenek/3sQlmxy8v/reset-min.css" />
+    
+    <script language="javascript" src="http://mootools.net/download/get/mootools-core-1.4.5-full-nocompat-yc.js"></script>
+    
+    <!-- JavaScript -->
+    
+    <script language="javascript">
+    var lnp;
+    var np;
+    window.addEvent('domready', function() {
+        $$('.spotify_audio_player').setStyles({'width': '960px', 'height': '80px'});
+        $$('.audio_player embed').setStyles({'width': '960px', 'height': '15px'});
+        $$('.VideoPost iframe').each(function(obj)
+        {
+            w = parseInt(obj.getStyle('width'));
+            h = parseInt(obj.getStyle('height'));
+            nw = 960;
+            nh = h * nw / w;
+            obj.setStyles({"width": nw+"px", height: nh+'px'})
+        });
+        window.addEvent("scroll", function(e) {
+            scroll = window.getScroll();
+            ssize = window.getScrollSize();
+            rsize = window.getSize();
+            np = $('nextp');
+            if((scroll.y+rsize.y*3) > ssize.y && np.getAttribute('href').length > 0)
+            {
+                r = new Request.HTML({
+                    url : np.getAttribute('href'),
+                    onSuccess : function(responseTree, responseElements, responseHTML, responseJavaScript)
+                    {
+                        children = responseTree[1].getElements('#Posts').getChildren();
+                        $('Posts').adopt(children);
+                        $('nextp').setAttribute('href', responseElements[0].getElement('#nextp').getAttribute('href'));
+                        
+                        $$('.spotify_audio_player').setStyle('height', '80px');
+                        $$('.spotify_audio_player').setStyle('width', '960px');
+                        $$('.VideoPost iframe').each(function(obj)
+                        {
+                            w = parseInt(obj.getStyle('width'));
+                            h = parseInt(obj.getStyle('height'));
+                            nw = 960;
+                            nh = h * nw / w;
+                            obj.setStyles({"width": nw+"px", height: nh+'px'})
+                        });
+                    }
+                }).get();
+                np.setAttribute('href', '');
+            }
+        });
+    });
+    </script>
+
+<style type="text/css">
+/*========================================================
+Basics Page Setup                                                                                 
+========================================================*/
+html, body {background: {color:Background}; height: 100%; color: rgb(82,82,82); font-family: Helvetica, Arial, Sans-Serif;}
+    
+    #Wrapper { width: 960px; margin: auto; }
+    
+    .post { margin: 40px 0px 40px 0px; }
+    .PhotoPost, .AudioPost, .VideoPost { clear: both; }
+    .PhotoPost img { width: 960px; }
+    .caption { font-size: 0.9em; }
+    
+    .date { text-align: right; font-size: 0.8em; }
+    .date a { color: #333; text-decoration: none; }
+    
+    .caption a { color: #000; text-decoration: none; }
+    .caption a:hover { color: #888; }
+    
+    #head a { color: #333; text-decoration: none; }
+    
+    .Pagination a { color: #0066AA; text-decoration: none; }
+    .Pagination, #head { background-color: {color:Title}; font-size: 0.9em; padding: 20px; }
+    
+    #Copyright { color: #999; font-size: 0.7em; }
+    </style>
+<meta name="if:Small Title" content="0"/>
+<meta name="if:Infinite Scroll" content="0"/>
+<meta name="text:Blog Subtitle" content="..."/>
+<meta name="color:Title" content="#525252"/>
+<meta name="color:AltText" content="#3f3f3f"/>
+<meta name="color:Background" content="#e3e5e8"/>
+<meta name="color:Highlight" content="#0099cb"/>
+
+<meta name="text:Disqus Shortname" content=""/>
+<meta name="text:Dribbble Username" content=""/>
+<meta name="text:Facebook Username" content=""/>
+<meta name="text:Flickr Username" content=""/>
+<meta name="text:Forrst Username" content=""/>
+<meta name="text:Foursquare Username" content=""/>
+<meta name="text:GitHub Username" content=""/>
+<meta name="text:GooglePlus Usernumber" content=""/>
+<meta name="text:Lastfm Username" content=""/>
+<meta name="text:LetterBoxd Username" content=""/>
+<meta name="text:Twitter Username" content=""/>
+<meta name="text:Vimeo Username" content=""/>
+<!-- <meta name="text:YouTube Username" content=""/>  -->
+</head><!-- End Head -->
+
+<body>
+
+<div id="Wrapper">
+    
+        <div id="head"><a href="http://c-rom.tumblr.com">{Description}</a></div>
+<div id="Posts">
+{block:Posts}
+            
+            <div class="post">
+            
+            <div class="date">{block:Date}
+                <a href="{Permalink}" title="Date Posted">
+                    {DayOfMonth}{DayOfMonthSuffix} {Month} {Year}
+                </a>
+            {/block:Date}</div>
+{block:Photo}
+<div class="PhotoPost">
+                <img src="{PhotoURL-HighRes}" alt="{PhotoAlt}"/>
+            </div>
+{block:Caption}<div class="caption">{Caption}</div>{/block:Caption}
+{/block:Photo}
+{block:Text}
+                <div class="TextPost">{Body}</div>
+            {/block:Text}
+{block:Link}
+<a href="{URL}" {Target}>{Name}</a>
+{/block:Link}
+{block:Audio}
+<div class="AudioPost">
+{block:AudioEmbed}
+<div class="AudioEmbed">{AudioEmbed}</div>
+{/block:AudioEmbed}
+{block:AudioPlayer}
+<div class="AudioEmbed">{AudioPlayerBlack}</div>
+{/block:AudioPlayer} 
+            </div>
+{/block:Audio}
+{block:Video}
+<div class="VideoPost">
+{Video-500}
+{block:Caption}<div class="caption">{Caption}</div>{/block:Caption}
+</div>
+{/block:Video}
+
+{block:RebloggedFrom}From <a href="{ReblogParentURL}">{ReblogParentTitle}</a>{/block:RebloggedFrom}
+
+{block:Answer}TODO ANSWER{/block:Answer}
+{block:Photoset}TODO PHOTOSET{/block:Photoset}
+{block:Quote}TODO QUOTE{/block:Quote}
+{block:Chat}TODO CHAT{/block:Chat}
+            </div>
+ 
+   {/block:Posts}
+</div><!-- End Posts -->
+<div class="Pagination">
+            {block:PreviousPage}
+            <a href="{PreviousPage}" title="Go to the previous page">Back</a>&nbsp;&nbsp;&nbsp;
+            {/block:PreviousPage}
+        
+Page {CurrentPage} <span id="PageOf">of</span> {TotalPages}
+                
+            {block:NextPage}&nbsp;&nbsp;&nbsp;
+    <a href="{NextPage}" title="Go to the next page" id="nextp">Next</a>
+{/block:NextPage}
+            
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="Copyright">This blog is powered by <a href="http://tumblr.com" title="Tumblr">Tumblr</a>.</span>
+</div><!-- End Pagination -->
+</div><!-- End Page Wrapper -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36627144-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body><!-- End Body -->
+</html><!-- End HTML -->
